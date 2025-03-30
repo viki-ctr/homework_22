@@ -18,6 +18,7 @@ class Product(models.Model):
     cost = models.IntegerField(verbose_name="Цена за покупку")
     created_at = models.DateField(verbose_name="Дата создания")
     updated_at = models.DateField(verbose_name="Дата последнего изменения")
+    objects = models.Manager()
 
     class Meta:
         verbose_name = "Продукт"
@@ -31,6 +32,7 @@ class Product(models.Model):
 class Category(models.Model):
     name = models.CharField(max_length=150, verbose_name="Наименование категории")
     description = models.TextField(max_length=250, verbose_name="Описание категории", blank=True, null=True)
+    objects = models.Manager()
 
     class Meta:
         verbose_name = "Категория"
