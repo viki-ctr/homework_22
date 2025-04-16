@@ -1,24 +1,16 @@
-from django.shortcuts import render, redirect
-from django.contrib import messages
+from django.shortcuts import render, get_object_or_404
+from .models import Product
 
-# Create your views here.
+
 def home(request):
-    return render(request, 'home.html')
+    products = Product.objects.all()
+    return render(request, 'catalog/home.html', {'products': products})
 
 
 def contacts(request):
-    if request.method == 'POST':
-        name = request.POST.get('name')
-        phone = request.POST.get('phone')
-        message = request.POST.get('message')
+    return render(request, 'catalog/contacts.html')
 
-        print(f"Получено сообщение от {name} ({phone}): {message}")
 
-        messages.success(request, 'Ваше сообщение успешно отправлено!')
-
-        return redirect('catalog:contacts')
-
-    context = {
-        'title': 'Контакты',
-    }
-    return render(request, 'contacts.html', context)
+def product_detail(request, pk):
+    product = get_object_or_404(Product, pk=pk)
+    return render(request, 'catalog/product_detail.html', {'product': product})
