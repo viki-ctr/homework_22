@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block title %}Блог{% endblock %}
+
+{% block content %}
+<h1>Блог</h1>
+<a href="{% url 'blog:create' %}">Создать новую запись</a>
+<ul>
+{% for post in posts %}
+    <li>
+        <a href="{% url 'blog:detail' post.pk %}">{{ post.title }}</a>
+        ({{ post.created_at|date:"d.m.Y" }})
+        <a href="{% url 'blog:update' post.pk %}">Редактировать</a>
+        <a href="{% url 'blog:delete' post.pk %}">Удалить</a>
+    </li>
+{% endfor %}
+</ul>
+{% endblock %}
