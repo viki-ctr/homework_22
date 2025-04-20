@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block title %}
+  {% if object %}Редактирование {{ object.title }}{% else %}Новая запись{% endif %}
+{% endblock %}
+
+{% block content %}
+<h1>
+  {% if object %}Редактировать запись{% else %}Создать запись{% endif %}
+</h1>
+
+<form method="post" enctype="multipart/form-data">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <button type="submit">Сохранить</button>
+  <a href="{% url 'blog:list' %}">Отмена</a>
+</form>
+{% endblock %}
