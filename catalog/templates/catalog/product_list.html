@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Список продуктов</h1>
+<a href="{% url 'catalog:product_create' %}" class="btn btn-primary mb-3">Добавить продукт</a>
+<div class="list-group">
+    {% for product in products %}
+    <div class="list-group-item">
+        <h5>{{ product.name }}</h5>
+        <p>Цена: {{ product.price }}</p>
+        <div class="btn-group">
+            <a href="{% url 'catalog:product_detail' product.pk %}" class="btn btn-sm btn-outline-primary">Подробнее</a>
+            <a href="{% url 'catalog:product_update' product.pk %}" class="btn btn-sm btn-outline-secondary">Редактировать</a>
+            <a href="{% url 'catalog:product_delete' product.pk %}" class="btn btn-sm btn-outline-danger">Удалить</a>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}
