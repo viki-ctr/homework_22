@@ -2,16 +2,33 @@
 
 {% block content %}
 <h1>Список продуктов</h1>
-<a href="{% url 'catalog:product_create' %}" class="btn btn-primary mb-3">Добавить продукт</a>
-<div class="list-group">
+
+{% if user.is_authenticated %}
+<a href="{% url 'catalog:product_create' %}" class="btn btn-primary mb-3">
+    Добавить продукт
+</a>
+{% endif %}
+
+<div class="row">
     {% for product in products %}
-    <div class="list-group-item">
-        <h5>{{ product.name }}</h5>
-        <p>Цена: {{ product.price }}</p>
-        <div class="btn-group">
-            <a href="{% url 'catalog:product_detail' product.pk %}" class="btn btn-sm btn-outline-primary">Подробнее</a>
-            <a href="{% url 'catalog:product_update' product.pk %}" class="btn btn-sm btn-outline-secondary">Редактировать</a>
-            <a href="{% url 'catalog:product_delete' product.pk %}" class="btn btn-sm btn-outline-danger">Удалить</a>
+    <div class="col-md-4 mb-4">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">{{ product.name }}</h5>
+                <p class="card-text">{{ product.description|truncatechars:100 }}</p>
+                <p class="price">Цена: {{ product.price }}</p>
+                <a href="{% url 'catalog:product_detail' product.pk %}" class="btn btn-sm btn-outline-primary">
+                    Подробнее
+                </a>
+                {% if user.is_authenticated %}
+                <a href="{% url 'catalog:product_update' product.pk %}" class="btn btn-sm btn-outline-secondary">
+                    Редактировать
+                </a>
+                <a href="{% url 'catalog:product_delete' product.pk %}" class="btn btn-sm btn-outline-danger">
+                    Удалить
+                </a>
+                {% endif %}
+            </div>
         </div>
     </div>
     {% endfor %}
