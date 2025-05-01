@@ -1,36 +1,50 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block content %}
-<h1>Список продуктов</h1>
+<div class="container mt-4">
+    <!-- Кнопка добавления (только для авторизованных) -->
+    {% if user.is_authenticated %}
+    <div class="mb-4">
+        <a href="{% url 'catalog:product_create' %}" class="btn btn-success">
+            <i class="bi bi-plus-circle"></i> Добавить продукт
+        </a>
+    </div>
+    {% endif %}
 
-{% if user.is_authenticated %}
-<a href="{% url 'catalog:product_create' %}" class="btn btn-primary mb-3">
-    Добавить продукт
-</a>
-{% endif %}
-
-<div class="row">
-    {% for product in products %}
-    <div class="col-md-4 mb-4">
-        <div class="card">
-            <div class="card-body">
-                <h5 class="card-title">{{ product.name }}</h5>
-                <p class="card-text">{{ product.description|truncatechars:100 }}</p>
-                <p class="price">Цена: {{ product.price }}</p>
-                <a href="{% url 'catalog:product_detail' product.pk %}" class="btn btn-sm btn-outline-primary">
-                    Подробнее
-                </a>
-                {% if user.is_authenticated %}
-                <a href="{% url 'catalog:product_update' product.pk %}" class="btn btn-sm btn-outline-secondary">
-                    Редактировать
-                </a>
-                <a href="{% url 'catalog:product_delete' product.pk %}" class="btn btn-sm btn-outline-danger">
-                    Удалить
-                </a>
+    <!-- Список продуктов -->
+    <div class="row">
+        {% for product in products %}
+        <div class="col-md-4 mb-4">
+            <div class="card h-100">
+                {% if product.image %}
+                <img src="{{ product.image.url }}" class="card-img-top" alt="{{ product.name }}">
                 {% endif %}
+                <div class="card-body">
+                    <h5 class="card-title">{{ product.name }}</h5>
+                    <p class="card-text">{{ product.description|truncatechars:100 }}</p>
+                    <p class="text-muted">Цена: {{ product.price }} ₽</p>
+
+                    <!-- Кнопка просмотра -->
+                    <a href="{% url 'catalog:product_detail' product.pk %}" class="btn btn-primary btn-sm">
+                        <i class="bi bi-eye"></i> Подробнее
+                    </a>
+
+                    <!-- Кнопки управления (только для авторизованных) -->
+                    {% if user.is_authenticated %}
+                    <div class="mt-2">
+                        <a href="{% url 'catalog:product_update' product.pk %}" class="btn btn-warning btn-sm">
+                            <i class="bi bi-pencil"></i> Изменить
+                        </a>
+                        <a href="{% url 'catalog:product_delete' product.pk %}" class="btn btn-danger btn-sm">
+                            <i class="bi bi-trash"></i> Удалить
+                        </a>
+                    </div>
+                    {% endif %}
+                </div>
             </div>
         </div>
+        {% endfor %}
     </div>
-    {% endfor %}
 </div>
 {% endblock %}
