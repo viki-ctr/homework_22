@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Список продуктов</h1>
+
+{% if user.is_authenticated %}
+<a href="{% url 'catalog:product_create' %}" class="btn btn-primary mb-3">
+    Добавить продукт
+</a>
+{% endif %}
+
+<div class="row">
+    {% for product in products %}
+    <div class="col-md-4 mb-4">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">{{ product.name }}</h5>
+                <p class="card-text">{{ product.description|truncatechars:100 }}</p>
+                <p class="price">Цена: {{ product.price }}</p>
+                <a href="{% url 'catalog:product_detail' product.pk %}" class="btn btn-sm btn-outline-primary">
+                    Подробнее
+                </a>
+                {% if user.is_authenticated %}
+                <a href="{% url 'catalog:product_update' product.pk %}" class="btn btn-sm btn-outline-secondary">
+                    Редактировать
+                </a>
+                <a href="{% url 'catalog:product_delete' product.pk %}" class="btn btn-sm btn-outline-danger">
+                    Удалить
+                </a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

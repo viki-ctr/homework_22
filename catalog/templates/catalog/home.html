@@ -1,31 +1,47 @@
 {% extends "base.html" %}
 
-{% block title %}Skystore - Главная{% endblock %}
-
 {% block content %}
-<div class="row text-center">
-    {% for product in products %}
-    <div class="col-3 mb-4">
-        <div class="card h-100 box-shadow">
-            <div class="card-header">
-                <h4 class="my-0 font-weight-normal">{{ product.name }}</h4>
-            </div>
-            <div class="card-body d-flex flex-column">
-                {% if product.image %}
-                <img src="{{ product.image.url }}" class="img-fluid mb-3" alt="{{ product.name }}">
-                {% endif %}
-                <p class="card-text flex-grow-1">
-                    {{ product.description|truncatechars:100 }}
-                </p>
-                <div class="mt-auto">
-                    <a href="{% url 'catalog:product_detail' product.pk %}"
-                       class="btn btn-lg btn-block btn-outline-primary">
-                        Подробнее
-                    </a>
+<div class="container">
+    <!-- Проверка авторизации -->
+    <div class="alert alert-secondary mb-4">
+        Текущий пользователь: <strong>{{ user }}</strong><br>
+        Статус авторизации: <strong>{{ user.is_authenticated|yesno:"Да,Нет" }}</strong>
+    </div>
+
+    <!-- Кнопка создания -->
+    {% if user.is_authenticated %}
+    <div class="mb-4">
+        <a href="{% url 'catalog:product_create' %}"
+           class="btn btn-success">
+            <i class="bi bi-plus-circle"></i> Создать
+        </a>
+    </div>
+    {% endif %}
+
+    <!-- Список продуктов -->
+    <div class="row">
+        {% for product in products %}
+        <div class="col-md-4 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5>{{ product.name }}</h5>
+
+                    {% if user.is_authenticated %}
+                    <div class="mt-2">
+                        <a href="{% url 'catalog:product_update' product.pk %}"
+                           class="btn btn-sm btn-warning">
+                            <i class="bi bi-pencil"></i>
+                        </a>
+                        <a href="{% url 'catalog:product_delete' product.pk %}"
+                           class="btn btn-sm btn-danger">
+                            <i class="bi bi-trash"></i>
+                        </a>
+                    </div>
+                    {% endif %}
                 </div>
             </div>
         </div>
+        {% endfor %}
     </div>
-    {% endfor %}
 </div>
 {% endblock %}
