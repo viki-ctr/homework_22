@@ -35,8 +35,10 @@ ALLOWED_HOSTS = ['*']
 
 
 # Application definition
+AUTH_USER_MODEL = 'users.User'
 
 INSTALLED_APPS = [
+    'users.apps.UsersConfig',
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -141,3 +143,4 @@ MEDIA_URL = 'media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 DEFAULT_CHARSET = 'utf-8'
 LOGIN_REDIRECT_URL = '/products/'
+
