@@ -26,8 +26,13 @@
                         <a href="{% url 'catalog:product_update' product.pk %}" class="btn btn-warning">
                             <i class="bi bi-pencil"></i> Редактировать
                         </a>
-                        <a href="{% url 'catalog:product_delete' product.pk %}" class="btn btn-danger">
-                            <i class="bi bi-trash"></i> Удалить
+                        {% endif %}
+                        {% if user == product.owner or user.has_perm('products.delete_product') %}
+                        <a href="{% url 'delete_product' product.pk %}" class="btn btn-danger">Удалить</a>
+                        {% endif %}
+
+                        {% if user.has_perm('products.can_unpublish_product') and product.is_published %}
+                        <a href="{% url 'unpublish_product' product.pk %}" class="btn btn-warning">Отменить публикацию
                         </a>
                         {% endif %}
                     </div>
