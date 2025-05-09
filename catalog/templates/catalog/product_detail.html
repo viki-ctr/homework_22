@@ -1,7 +1,9 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load cache %}
 
 {% block content %}
+{% cache 900 product_detail product.pk %}
 <div class="container mt-4">
     <div class="card">
         <div class="row g-0">
@@ -41,4 +43,5 @@
         </div>
     </div>
 </div>
+{% endcache %}
 {% endblock %}

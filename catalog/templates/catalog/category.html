@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load cache %}
+
+{% block title %}Продукты в категории{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    {% cache 600 category_products %}
+    <h1>Продукты в категории</h1>
+    <ul class="list-group">
+        {% for product in products %}
+        <li class="list-group-item">
+            <a href="{{ product.get_absolute_url }}">{{ product.name }}</a>
+        </li>
+        {% empty %}
+        <li class="list-group-item">Нет продуктов в этой категории</li>
+        {% endfor %}
+    </ul>
+    {% endcache %}
+</div>
+{% endblock %}
